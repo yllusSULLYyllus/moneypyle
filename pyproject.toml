@@ -1,0 +1,10 @@
+[project]
+name = "accounting"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "django-crispy-forms>=2.5",
+    "psycopg>=3.3.2",
+]
