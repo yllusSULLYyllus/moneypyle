@@ -77,3 +77,16 @@ class TransactionLine(models.Model):
     account_id = models.ForeignKey(Account, on_delete=models.PROTECT)
     transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
     line_number = models.IntegerField()
+
+class Event(models.Model):
+    event_date = models.DateField()
+    debit_account = models.ForeignKey(Account, on_delete=models.PROTECT, related_name="debit_account")
+    debit_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    debit_party = models.ForeignKey(Party, on_delete=models.PROTECT, blank=True, related_name="debit_party")
+    credit_account = models.ForeignKey(Account, on_delete=models.PROTECT, related_name="credit_account")
+    credit_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    credit_party = models.ForeignKey(Party, on_delete=models.PROTECT, blank=True, related_name="credit_party")
+    memo = models.CharField()
+
+    def __str__(self):
+        return self.memo
