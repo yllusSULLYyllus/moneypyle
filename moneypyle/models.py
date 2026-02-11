@@ -1,4 +1,5 @@
 
+from decimal import Decimal
 from django.db import models
 from django.db.models import F
 from django.db.models.functions import Concat
@@ -68,7 +69,7 @@ class Transaction(models.Model):
     def __str__(self):
         return self.reference_number
 
-class TransactionLine(models.Model):
+class InvoiceLine(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.PROTECT)
     transaction_description = models.CharField(blank=True)
     quantity = models.IntegerField()
@@ -77,6 +78,15 @@ class TransactionLine(models.Model):
     account_id = models.ForeignKey(Account, on_delete=models.PROTECT)
     transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
     line_number = models.IntegerField()
+
+class TransactionLine(models.Model):
+    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
+    account_id = models.ForeignKey(Account, on_delete=models.PROTECT)
+    debit_amount = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal(0))
+    credit_amount = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal(0))
+    transaction_description = models.CharField(blank=True)
+    line_number = models.IntegerField()
+    
 
 class Event(models.Model):
     event_date = models.DateField()
