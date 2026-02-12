@@ -79,7 +79,7 @@ class InvoiceLine(models.Model):
     transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
     line_number = models.IntegerField()
 
-class TransactionLine(models.Model):
+class AccountEntry(models.Model):
     transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
     account_id = models.ForeignKey(Account, on_delete=models.PROTECT)
     debit_amount = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal(0))
