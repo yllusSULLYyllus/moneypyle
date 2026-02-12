@@ -2,10 +2,10 @@
 {% block content %}
 <div style="display: flex; flex-direction: row; justify-content: space-evenly;">
     <div>
-        <h1>Accounts</h1>
+        <!-- <h1>Accounts</h1>
         <ul>
             {% for a in account_list %}
-            <a href="/moneypyle/account/{{ a.id }}">
+            <a href="/account/{{ a.id }}">
                 <li>{{ a.number }} - {{ a.name }}</li>
             </a>
             {% empty %}
@@ -23,7 +23,12 @@
             <div>
                 <button type="submit">Save</button>
             </div>
-        </form>
+        </form> -->
+        <p>{{ account.number }} - {{ account.name }} </p>
+        <h2>{{ account.name.upper }} Details</h2>
+        <div>
+            {{ table }}
+        </div>
     </div>
 </div>
 {% endblock %}

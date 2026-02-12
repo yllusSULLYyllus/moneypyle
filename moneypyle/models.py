@@ -39,8 +39,8 @@ class Account(models.Model):
     class Meta:
         ordering = ['number']
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+        # return self.name, self.number, self.account_type
     
     def list_assets(self):
         return self.account_type == "AS"

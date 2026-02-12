@@ -19,5 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', include('moneypyle.urls')),
+    path('moneypyle/', include(('moneypyle.urls', 'moneypyle'), namespace='moneypyle')),
 ]

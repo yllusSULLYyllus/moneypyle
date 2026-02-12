@@ -1,2 +1,60 @@
-{% block content %}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * ── Table container ─────────────────────── */ table {
+            width: 100%;
+            /* fill the parent element */
+            border-collapse: collapse;
+            /* merge adjacent borders */
+            margin: 1rem 0;
+            /* vertical spacing */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* ── Cell borders ─────────────────────────── */
+        th,
+        td {
+            border: 1px solid #ddd;
+            /* light gray grid lines */
+            padding: 0.5rem 0.75rem;
+            /* breathing room inside cells */
+            text-align: left;
+            /* left‑align text (change as needed) */
+        }
+
+        /* ── Header row ───────────────────────────── */
+        thead th {
+            background-color: #f4f4f4;
+            /* subtle header shade */
+            font-weight: 600;
+        }
+
+        /* ── Zebra striping (alternating rows) ───── */
+        tbody tr:nth-child(even) {
+            background-color: #fafafa;
+            /* even rows – very light gray */
+        }
+
+        tbody tr:hover {
+            background-color: #eaeffd;
+            /* highlight on hover – optional */
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="{% url 'moneypyle:home' %}">Home</a>
+        <a href="{% url 'moneypyle:add_account' %}">Account Info</a>
+        <a href="{% url 'moneypyle:journal' %}">New Entry</a>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+
+</html>
