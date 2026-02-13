@@ -1,0 +1,19 @@
+<style>
+    .sidebar {
+        width: 250px;
+        padding: 20px;
+    }
+</style>
+
+<aside class="sidebar">
+    <h1>Accounts</h1>
+    <ul>
+        {% for a in account_list %}
+        <a href="/moneypyle/accounts/{{ a.id }}">
+            <li>{{ a.number }} - {{ a.name }}</li>
+        </a>
+        {% empty %}
+        <li>No accounts yet.</li>
+        {% endfor %}
+    </ul>
+</aside>

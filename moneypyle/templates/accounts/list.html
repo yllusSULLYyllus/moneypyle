@@ -1,18 +1,7 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 {% block content %}
-<div style="display: flex; flex-direction: row; justify-content: space-evenly;">
-    <div>
-        <h1>Accounts</h1>
-        <ul>
-            {% for a in account_list %}
-            <a href="/moneypyle/account/{{ a.id }}">
-                <li>{{ a.number }} - {{ a.name }}</li>
-            </a>
-            {% empty %}
-            <li>No accounts yet.</li>
-            {% endfor %}
-        </ul>
-    </div>
+<div>
+{% include 'accounts/sidebar.html' %}
     <div>
         <h2>Add Account</h2>
         <form method="post">

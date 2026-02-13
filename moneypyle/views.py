@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http.request import QueryDict
 from django.views.generic import ListView, CreateView, DetailView
 from django.forms.models import modelformset_factory
+from django.contrib.auth import authenticate, login, logout
 import pandas as pd
 
 from .models import Account, AccountEntry
@@ -19,23 +21,58 @@ class AccountView(ListView):
 def home(request):
     return render(request, "home.html")
 
+def signon(request):
+
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            context = {
+                "error": "Invalid Login Information"
+            }
+            return render(request, 'signon.html', context=context)
+        login(request, user)
+        return redirect('moneypyle:home')
+
+    return render(request, 'signon.html')
+
+def signoff(request):   
+    return render(request, 'signon.html')
+
+def register_user(request):
+    return render(request, 'signon.html')
+
 def add_account(request):
     form = AccountForm
     account_list = Account.objects.all()
+
     context = {
         "form": form,
         "account_list": account_list
     }
-    return render(request, 'accounts/list.html',context=context)
+    if request.method == "POST":
+        data = AccountForm(request.POST)
+        if data.is_valid():
+            data.save()
+            # account.save()
+            # context["created"] = True
+            return redirect('moneypyle:accounts')
+    else:
+        return render(request, 'accounts/list.html',context=context)
 
 def account_details(request, account_id):
     account = get_object_or_404(Account, pk=account_id)
-    print(account)
     details = AccountEntry.objects.values().filter(account_id=account_id)
     d_dict = details.values()
-    df = pd.DataFrame(d_dict)
-    table = df.to_html()
+    print(d_dict)
+    if d_dict.count() == 0:
+        table = '<h2>No Data</h2>'
+    else:
+        df = pd.DataFrame(d_dict)
+        table = df.to_html(index=False)
     from django.utils.safestring import mark_safe
+    print(table)
     safe_table = mark_safe(table)
 
     context = {

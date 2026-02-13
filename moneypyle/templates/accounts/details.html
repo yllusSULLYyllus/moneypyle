@@ -25,9 +25,13 @@
             </div>
         </form> -->
         <p>{{ account.number }} - {{ account.name }} </p>
-        <h2>{{ account.name.upper }} Details</h2>
+        <h2>{{ account.name|upper }} Details</h2>
         <div>
+            {% if table == None %}
+            <p>No Data</p>
+            {% else %}
             {{ table }}
+            {% endif %}
         </div>
     </div>
 </div>
