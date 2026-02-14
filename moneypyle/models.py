@@ -39,8 +39,8 @@ class Account(models.Model):
     class Meta:
         ordering = ['number']
 
-    # def __str__(self):
-        # return self.name, self.number, self.account_type
+    def __str__(self):
+        return f"{self.number} {self.name} "
     
     def list_assets(self):
         return self.account_type == "AS"
@@ -52,6 +52,9 @@ class Party(models.Model):
     full_name = models.GeneratedField(expression=Concat('first_name', models.Value(' '), 'last_name'), output_field=models.CharField(max_length=64), db_persist=True)
     email = models.EmailField(blank=True)
     company_id = models.ManyToManyField(Company, related_name="Party", blank=True)
+
+    def __str__(self) -> str:
+        return f"{self.full_name}"
 
 class Product(models.Model):
     name = models.CharField()
