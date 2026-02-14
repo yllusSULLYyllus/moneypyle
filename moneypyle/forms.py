@@ -1,6 +1,6 @@
 from django import forms
 from .models import Account, AccountEntry, Transaction
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, widgets
 
 
 class AccountForm(forms.ModelForm):
@@ -13,6 +13,9 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = ['transaction_date', 'party_id', 'reference_number', 'memo', 'total_amount']
+        widgets ={
+            'transaction_date': forms.DateInput(attrs={'type': 'date'})
+        }
 
 
 class EntryForm(forms.ModelForm):

@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.safestring import mark_safe
 from django.http.request import QueryDict
 from django.views.generic import ListView, CreateView, DetailView
 from django.forms.models import modelformset_factory
@@ -13,11 +14,6 @@ class AccountView(ListView):
     model = Account
     template_name = 'accounts/list.html'
     fields = ['name']
-
-# class journal(CreateView):
-#     model = AccountEntry
-#     fields = ['account_id', 'credit_amount']
-#     template_name = "transactions/journal.html"
 
 def home(request):
     return render(request, "home.html")
@@ -65,14 +61,13 @@ def account_details(request, account_id):
     account = get_object_or_404(Account, pk=account_id)
     details = AccountEntry.objects.values().filter(account_id=account_id)
     d_dict = details.values()
-    print(d_dict)
+
     if d_dict.count() == 0:
         table = '<h2>No Data</h2>'
     else:
         df = pd.DataFrame(d_dict)
         table = df.to_html(index=False)
-    from django.utils.safestring import mark_safe
-    print(table)
+
     safe_table = mark_safe(table)
 
     context = {
