@@ -51,7 +51,7 @@
                 </tr>
                 {% endfor %}
                 <tr>
-                    <td></td>
+                    <td>Totals:</td>
                     <td><input type="number" id="debit-total"></td>
                     <td><input type="number" id="credit-total"></td>
                     <td></td>
@@ -63,5 +63,66 @@
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 <script>
+    const debits = document.querySelectorAll('.debit')
+    const credits = document.querySelectorAll('.credit')
+    const debitTotal = document.getElementById('debit-total')
+    const creditTotal = document.getElementById('credit-total')
+    const grandTotal = document.getElementById('id_trans-total_amount')
+    const saveButton = document.querySelector('.btn.btn-primary')
+
+    const toNum = v => {
+        const n = parseFloat(v.replace(/,/g, '').trim());
+        return isNaN(n) ? 0 : n;
+    };
+
+    const recalcDebits = () => {
+        let sum = 0;
+        debits.forEach(inp => sum += toNum(inp.value));
+        debitTotal.value = sum
+        if (debitTotal.value != creditTotal.value) {
+            debitTotal.style.backgroundColor = '#ffe5e5'
+            creditTotal.style.backgroundColor = '#ffe5e5'
+        } else {
+            debitTotal.style.backgroundColor = '#f0f8ff'
+            creditTotal.style.backgroundColor = '#f0f8ff'
+        }
+
+    };
+    const recalcCredits = () => {
+        let sum = 0;
+        credits.forEach(inp => sum += toNum(inp.value));
+        creditTotal.value = sum
+        if (debitTotal.value != creditTotal.value) {
+            debitTotal.style.backgroundColor = '#ffe5e5'
+            creditTotal.style.backgroundColor = '#ffe5e5'
+        } else {
+            debitTotal.style.backgroundColor = '#f0f8ff'
+            creditTotal.style.backgroundColor = '#f0f8ff'
+        }
+
+    };
+
+    const recalcTotal = () => {
+        if (debitTotal.value === creditTotal.value) {
+        grandTotal.value = debitTotal.value
+        grandTotal.style.backgroundColor = '#f0f8ff'
+        saveButton.disabled = false
+        saveButton.textContent = "Save"
+        saveButton.style.backgroundColor = '#f0f8ff'
+    } else { 
+        grandTotal.style.backgroundColor = '#ffe5e5'
+        saveButton.disabled = true
+        saveButton.textContent = "Credits and Debits don't match"
+        saveButton.style.backgroundColor = '#ffe5e5'
+    }
+    }
+
+
+    debits.forEach(inp => inp.addEventListener('input', recalcDebits));
+    credits.forEach(inp => inp.addEventListener('input', recalcCredits));
+    debits.forEach(inp => inp.addEventListener('input', recalcTotal));
+    credits.forEach(inp => inp.addEventListener('input', recalcTotal));
+
+
 </script>
 {% endblock %}

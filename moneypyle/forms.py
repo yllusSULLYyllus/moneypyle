@@ -23,6 +23,10 @@ class EntryForm(forms.ModelForm):
         model = AccountEntry
         fields = ['account', 'debit_amount', 'credit_amount', 'transaction_description']
     # template_name = "transactions/journal.html"
+        widgets = {
+            'debit_amount': forms.NumberInput(attrs={'class': 'debit'}),
+            'credit_amount': forms.NumberInput(attrs={'class': 'credit'})
+        }
 
 EntryFormSet = inlineformset_factory(
     parent_model=Transaction,
