@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http.request import QueryDict
 from django.views.generic import ListView, CreateView, DetailView
 from django.forms.models import modelformset_factory
+from django.db import transaction
 from django.contrib.auth import authenticate, login, logout
 import pandas as pd
 
 from .models import Account, AccountEntry
-from .forms import TransactionForm, AccountForm, EntryForm
+from .forms import TransactionForm, AccountForm, EntryForm, EntryFormSet
 
 class AccountView(ListView):
     model = Account
@@ -44,7 +45,7 @@ def register_user(request):
     return render(request, 'signon.html')
 
 def add_account(request):
-    form = AccountForm
+    form = AccountForm(request.POST or None)
     account_list = Account.objects.all()
 
     context = {
@@ -52,9 +53,8 @@ def add_account(request):
         "account_list": account_list
     }
     if request.method == "POST":
-        data = AccountForm(request.POST)
-        if data.is_valid():
-            data.save()
+        if form.is_valid():
+            form.save()
             # account.save()
             # context["created"] = True
             return redirect('moneypyle:accounts')
@@ -83,17 +83,25 @@ def account_details(request, account_id):
     return render(request, 'accounts/details.html', context=context)
 
 def new_entry(request):
-    form = TransactionForm
-    form_2 = EntryForm
-    # obj = get_object_or_404(Account)
-    # Formset = modelformset_factory()
-    EntryFormset = modelformset_factory(AccountEntry, form=EntryForm, extra=0)
+    if request.method == "POST":
+        form = TransactionForm(request.POST or None, prefix="trans")
+        form_2 = EntryFormSet(request.POST or None, prefix="entries")
 
-    # qs = obj.g
-    # formset = EntryFormset(request.POST or None, queryset=)
 
-    context = {
+ 
+        if all([form.is_valid(), form_2.is_valid()]):
+            with transaction.atomic():
+                parent = form.save(commit=False)
+                form_2.instance = parent
+                form_2.save(commit=False)
+                print(parent, form_2)
+        return redirect("moneypyle:journal")
+    else:
+        print("nope")
+        form = TransactionForm(prefix="trans")
+        form_2 = EntryFormSet(prefix="entries")
+        context = {
         "form": form,
-        "form_2": form_2,
-    }
+        "form_2": form_2
+        }      
     return render( request, "transactions/journal.html", context=context)

@@ -31,7 +31,7 @@ class Account(models.Model):
         ("EX", "Expenses")
     ]
 
-    name = models.CharField(max_length=40)
+    name = models.CharField("Account", max_length=40)
     number = models.IntegerField()
     account_type = models.CharField(choices=ACCOUNT_TYPES)
     description = models.CharField(max_length=250, blank=True)
@@ -80,11 +80,11 @@ class InvoiceLine(models.Model):
     line_number = models.IntegerField()
 
 class AccountEntry(models.Model):
-    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
-    account_id = models.ForeignKey(Account, on_delete=models.PROTECT)
-    debit_amount = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal(0))
-    credit_amount = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal(0))
-    transaction_description = models.CharField(blank=True)
+    transaction= models.ForeignKey(Transaction, on_delete=models.PROTECT)
+    account= models.ForeignKey(Account, on_delete=models.PROTECT)
+    debit_amount = models.DecimalField("Debit", decimal_places=2, max_digits=10, default=Decimal(0))
+    credit_amount = models.DecimalField("Credit", decimal_places=2, max_digits=10, default=Decimal(0))
+    transaction_description = models.CharField("Description", blank=True)
     line_number = models.IntegerField()
     
 

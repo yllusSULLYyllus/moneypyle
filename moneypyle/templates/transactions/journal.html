@@ -1,23 +1,68 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% block content %}
-<h1>Add a new Transaction</h1>
-<form method="post">
+<h2>New Entry </h2>
+
+<form method="post" novalidate>
     {% csrf_token %}
-    {{ form.non_field_errors }}
-    <table>
-        <tr>
-            {{ form.as_table }}
-        </tr>
-    </table>
-    {% csrf_token %}
-    {{ form_2.non_field_errors }}
-    <table>
-        <tr>
-            {{ form_2.as_table }}
-        </tr>
-    </table>
-    <div>
-        <button type="submit">Save</button>
-    </div>
+
+    {# ==== TransactionForm (parent) ==== #}
+    <fieldset>
+        <legend>Transaction Details</legend>
+        {{ form.non_field_errors }}
+        {% for field in form %}
+        <div class="mb-3">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+            <div class="text-danger">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </fieldset>
+
+    <hr>
+    <fieldset>
+        <legend>Entry Details</legend>
+        {{ form_2.non_field_errors }}
+        {{ form_2.management_form }}
+        {% if field.errors %}
+        <div class="text-danger">{{ field.errors }}</div>
+        {% endif %}
+        <table>
+
+            <thead>
+                <tr>
+                    {% for field in form_2.forms.0.visible_fields %}
+                    <th>{{ field.label }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry_form in form_2.forms %}
+                <tr>
+                    {# Loop over the *visible* fields of this particular form #}
+                    {% for field in entry_form.visible_fields %}
+                    <td>
+                        {{ field.errors.as_ul }} {# show field‑level errors #}
+                        {{ field }} {# the actual input widget #}
+                    </td>
+                    {% endfor %}
+
+                    {# If you enabled can_delete, render the delete checkbox #}
+                    {% if form_2.can_delete %}
+                    <td>{{ entry_form.DELETE }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
+<script>
+    const total = document.getElementById('id_trans-total_amount')
+    const sums = document.getElementById()
+</script>
 {% endblock %}
