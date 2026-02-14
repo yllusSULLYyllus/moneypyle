@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account, AccountEntry, Transaction
+from .models import Account, AccountEntry, Transaction, Party
 from django.forms import inlineformset_factory, widgets
 
 
@@ -38,3 +38,9 @@ EntryFormSet = inlineformset_factory(
     min_num=1,            # optional: enforce at least one entry
     validate_min=True,
 )
+
+class AddPartForm(forms.ModelForm):
+    class Meta:
+        model = Party
+        fields = ["first_name", "last_name", "email", "company_id"]
+    
