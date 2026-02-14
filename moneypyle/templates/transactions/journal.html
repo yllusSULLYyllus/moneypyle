@@ -14,8 +14,8 @@
         <div class="mb-3">
             {{ field.label_tag }}
             {{ field }}
-            {% if field.errors %}
-            <div class="text-danger">{{ field.errors }}</div>
+            {% if field.errors.as_text %}
+            <div class="text-danger">{{ field.errors.as_text }}</div>
             {% endif %}
         </div>
         {% endfor %}
@@ -26,8 +26,8 @@
         <legend>Entry Details</legend>
         {{ form_2.non_field_errors }}
         {{ form_2.management_form }}
-        {% if field.errors %}
-        <div class="text-danger">{{ field.errors }}</div>
+        {% if field.errors.as_text %}
+        <div class="text-danger">{{ field.errors.as_text }}</div>
         {% endif %}
         <table>
 
@@ -44,7 +44,7 @@
                     {# Loop over the *visible* fields of this particular form #}
                     {% for field in entry_form.visible_fields %}
                     <td>
-                        {{ field.errors.as_ul }} {# show field‑level errors #}
+                        {{ field.errors.as_text }} {# show field‑level errors #}
                         {{ field }} {# the actual input widget #}
                     </td>
                     {% endfor %}
@@ -108,11 +108,13 @@
         grandTotal.style.backgroundColor = '#f0f8ff'
         saveButton.disabled = false
         saveButton.textContent = "Save"
+        saveButton.style.fontWeight = 'normal'
         saveButton.style.backgroundColor = '#f0f8ff'
     } else { 
         grandTotal.style.backgroundColor = '#ffe5e5'
         saveButton.disabled = true
         saveButton.textContent = "Credits and Debits don't match"
+        saveButton.style.fontWeight = 'bold'
         saveButton.style.backgroundColor = '#ffe5e5'
     }
     }

@@ -14,7 +14,8 @@ class TransactionForm(forms.ModelForm):
         model = Transaction
         fields = ['transaction_date', 'party_id', 'reference_number', 'memo', 'total_amount']
         widgets ={
-            'transaction_date': forms.DateInput(attrs={'type': 'date'})
+            'transaction_date': forms.DateInput(attrs={'type': 'date'}),
+            'total_amount': forms.NumberInput(attrs={'readonly': True}),
         }
 
 
