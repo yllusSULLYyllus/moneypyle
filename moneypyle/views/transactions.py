@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.db import transaction
 from ..forms import TransactionForm, EntryFormSet
 
+
+
 def new_entry(request):
     if request.method == "POST":
         form = TransactionForm(request.POST or None, prefix="trans")

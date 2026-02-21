@@ -25,3 +25,6 @@ def register_user(request):
 
 def admin_home(request):
     return render(request, 'home.html')
+
+def clock_time(request):
+    return render( request, 'clock-time.html')

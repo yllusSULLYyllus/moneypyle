@@ -21,6 +21,9 @@ class Company(Address):
     company_name = models.CharField()
     description = models.CharField(blank=True)
     industry = models.CharField()
+    is_active = models.BooleanField("Active", default=True)
+    def __str__(self) -> str:
+        return f"{self.company_name}"
 
 class Account(models.Model):
     ACCOUNT_TYPES = [ 
@@ -34,6 +37,7 @@ class Account(models.Model):
     name = models.CharField("Account", max_length=40)
     number = models.IntegerField()
     account_type = models.CharField(choices=ACCOUNT_TYPES)
+    is_active = models.BooleanField("Active", default=True)
     description = models.CharField(max_length=250, blank=True)
 
     class Meta:
@@ -49,9 +53,10 @@ class Party(models.Model):
     party_type = models.CharField(null=True, blank=True)
     first_name = models.CharField()
     last_name = models.CharField()
-    full_name = models.GeneratedField(expression=Concat('first_name', models.Value(' '), 'last_name'), output_field=models.CharField(max_length=64), db_persist=True)
+    full_name = models.GeneratedField(expression=Concat('first_name', models.Value(' '), 'last_name'), output_field=models.CharField(max_length=64), db_persist=True, unique=True)
     email = models.EmailField(blank=True)
     company_id = models.ManyToManyField(Company, related_name="Party", blank=True)
+    is_active = models.BooleanField("Active", default=True)
 
     def __str__(self) -> str:
         return f"{self.full_name}"
@@ -60,11 +65,12 @@ class Product(models.Model):
     name = models.CharField()
     type = models.CharField(blank=True)
     product_description = models.CharField(blank=True)
+    is_active = models.BooleanField("Active", default=True)
 
 class Transaction(models.Model):
     logged_date = models.DateTimeField(auto_now_add=True)
     transaction_date = models.DateField()
-    party_id = models.ForeignKey(Party, on_delete=models.PROTECT)
+    party_id = models.ForeignKey(Party, on_delete=models.PROTECT,limit_choices_to={'is_active': True},)
     reference_number = models.CharField()
     total_amount = models.DecimalField(decimal_places=2, max_digits=10)
     memo = models.CharField(max_length=256, blank=True)

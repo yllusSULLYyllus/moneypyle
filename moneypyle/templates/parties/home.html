@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<fieldset>
+    <legend>List of Parties</legend>
+    <div>
+
+        <form action="{% url 'moneypyle:party' %}" method="post">
+            {% csrf_token %}
+            <h2>Active Parties</h2>
+            <table id="party-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Make Inactive?
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in party_list %}
+                    <tr>
+                        <td> {{ p }}</td>
+                        <td><input class="checkbox" type="checkbox" name="delete_ids" id="delete"
+                                value="{{ p.id }}"></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <h2>There's no Party data yet!</h2>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2>Inactive Parties</h2>
+            <table id="inactive-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Make Active?
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in inactive %}
+                    <tr>
+                        <td> {{ p }}</td>
+                        <td><input class="checkbox" type="checkbox" name="inactive_ids" id="inactive"
+                                value="{{ p.id }}"></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <h2>There's no Party data yet!</h2>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div>
+                <button name="update-party" id="update-button" type="submit" style="display: block;">Submit
+                    Changes</button>
+            </div>
+        </form>
+    </div>
+</fieldset>
+
+<fieldset>
+    <h2>
+        <legend>Add new Party</legend>
+    </h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+
+        </table>
+
+        <div>
+            <button name="create-party" id="create-party" type="submit"> Add Party</button>
+        </div>
+    </form>
+</fieldset>
+<script>
+    const activeTable = document.getElementById('party-table')
+    const inactiveTable = document.getElementById('inactive-table')
+    const deleteButton = document.getElementById('update-button')
+
+    const getCheckboxState = (tbl) => Array.from(
+        tbl.querySelectorAll(".checkbox")
+    ).map(cb => cb.checked);
+
+    const initialActiveState = getCheckboxState(activeTable)
+    const initialInactiveState = getCheckboxState(inactiveTable)
+
+    const arraysDiffer = (arr1, arr2) => {
+        if (arr1.length !== arr2.length) return true;
+        for (let i = 0; i < arr1.length; i++) {
+            if (arr1[i] !== arr2[i]) return true;
+        }
+        return false;
+    };
+
+const updateButtonState = () => {
+    const nowActive   = getCheckboxState(activeTable);
+    const nowInactive = getCheckboxState(inactiveTable);
+
+    const activeChanged   = arraysDiffer(initialActiveState,   nowActive);
+    const inactiveChanged = arraysDiffer(initialInactiveState, nowInactive);
+
+    updateBtn.disabled = !(activeChanged || inactiveChanged);
+};
+
+
+
+    activeTable.addEventListener('change', e => {
+        if (e.target.type === 'checkbox') {
+            updateButtonState(table, initialActiveState);
+        }
+    });
+    inactiveTable.addEventListener('change', e => {
+        if (e.target.type === 'checkbox') {
+            updateButtonState(inactiveTable, initialInactiveState);
+        }
+    });
+
+    updateButtonState();
+
+
+</script>
+
+{% endblock %}

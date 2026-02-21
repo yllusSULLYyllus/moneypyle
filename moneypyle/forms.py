@@ -39,7 +39,7 @@ EntryFormSet = inlineformset_factory(
     validate_min=True,
 )
 
-class AddPartForm(forms.ModelForm):
+class AddPartyForm(forms.ModelForm):
     class Meta:
         model = Party
         fields = ["first_name", "last_name", "email", "company_id"]
