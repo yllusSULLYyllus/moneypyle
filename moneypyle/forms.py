@@ -43,4 +43,6 @@ class AddPartyForm(forms.ModelForm):
     class Meta:
         model = Party
         fields = ["first_name", "last_name", "email", "company_id"]
-    
+
+class BulkCategorization(forms.BaseForm):
+    pass
