@@ -77,21 +77,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'prod': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mydb',
         'USER': 'sully',
         'PASSWORD': 'admin',
         'HOST': 'db',
         'PORT': '5432',
-    },
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fctc',
-        'USER': 'sully',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '6543',
     }
 }
 
