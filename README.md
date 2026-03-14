@@ -31,7 +31,7 @@ After running the database setup, you container should be running. To start the 
 ```
 export DJANGO_SETTINGS_MODULE=config.dev_settings
 python manage.py migrate
-python manage.py runserver
+python manage.py runserver --prefix=/moneypyle/
 ```
 ### Run an already-setup project
 ```
@@ -39,5 +39,7 @@ docker container start mp-data
 export DJANGO_SETTINGS_MODULE=config.dev_settings
 python manage.py runserver
 ```
+
+The app should be running at `localhost:8000/moneypyle`
 ## Deploying Project
 working on it

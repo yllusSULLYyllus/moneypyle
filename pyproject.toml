@@ -10,4 +10,5 @@ dependencies = [
     "django-tables2>=2.8.0",
     "pandas>=3.0.0",
     "psycopg2-binary>=2.9.11",
+    "python-dotenv>=1.2.2",
 ]
