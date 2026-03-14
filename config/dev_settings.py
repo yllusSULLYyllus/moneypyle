@@ -79,8 +79,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fctc',
-        'USER': os.getenv('POSTGRES_USER'),
+        'NAME': 'mydb',
+        'USER': 'sully',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '6543',
