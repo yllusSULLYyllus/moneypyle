@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
 
 urlpatterns = [
+    path('', lambda request: redirect('/moneypyle/')),  # just for development so that you can click the startup link and go to the app homepage
     path('admin/', admin.site.urls),
     path('moneypyle/', include(('moneypyle.urls', 'moneypyle'), namespace='moneypyle')),
 ]
