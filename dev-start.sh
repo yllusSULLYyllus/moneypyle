@@ -1,4 +1,4 @@
-#! bin/bash
+# !bin/bash
 
 sudo systemctl start docker # If on Mac, comment this out. Starting the Docker Daemon does the same thing
 docker compose -f docker-compose.dev.yml up -d
