@@ -1,7 +1,7 @@
-# !bin/bash
+#! bin/bash
 
-sudo systemctl start docker
-docker container start mp-data
+sudo systemctl start docker # If on Mac, comment this out. Starting the Docker Daemon does the same thing
+docker compose -f docker-compose.dev.yml up -d
 
 source .venv/bin/activate
 pip install -r requirements.txt

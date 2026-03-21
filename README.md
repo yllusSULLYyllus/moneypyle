@@ -1,6 +1,6 @@
 # Moneypyle
 
-This is a simple double-entry bookkeeping app. This is meant to be no frills. The basics are solid. The work goes into making little modules that create useful functionality
+This is a simple double-entry bookkeeping app. This is meant to be no frills. The basics are solid. The work goes into making little modules that create useful functionality. It's an opportunity to get familiar with django
 
 ## Dev Setup
 ### Project setup
@@ -16,7 +16,7 @@ Set up env variables:
 Fill out with the correct variables for your app
 ### Database container setup
 
-Look over the `docker-compose.dev.yml`. This 
+Look over the `docker-compose.dev.yml`. This creates a volume in docker and attaches it to a container.
 #### on *most* linux:
 
 `systemctl start docker`
@@ -24,10 +24,30 @@ Look over the `docker-compose.dev.yml`. This
 #### on MacOS
   Just start the docker daemon.
 
+Then run
+
 `docker compose -f docker-compose.dev.yml up -d`
+
+By default this creates a conytainer named `mp-data` and a volume named `moneypyle_pgdata`
+
+To check if the volume was made and the container is running run:
+```
+docker ps
+docker volume ls
+```
+
+Your output will be similar to:
+``` 
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+a77e8d6ba0a9   postgres:latest   "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes   0.0.0.0:6543->5432/tcp, [::]:6543->5432/tcp   mp-data
+DRIVER    VOLUME NAME
+local     moneypyle_pgdata
+```
+
+Make sure the names in the `NAME` columns are what you expect. If so, you should be good to continue
 ## Running the dev evironment
 ### First time run
-After running the database setup, you container should be running. To start the dev server and finish configuring the database:
+After running the database setup, the container should be running. To start the dev server and finish configuring the database:
 ```
 export DJANGO_SETTINGS_MODULE=config.dev_settings
 python manage.py migrate
@@ -35,12 +55,22 @@ python manage.py runserver
 ```
 ### Run an already-setup project
 ```
-docker container start mp-data
+docker compose -f docker-compose.dev.yml up -d
 export DJANGO_SETTINGS_MODULE=config.dev_settings
 python manage.py runserver
 ```
-There is also a scrit
+There is also a script called `/dev-start.sh` that runs this whole process. Adjust to your needs. 
+
+After doing `chmod +x dev-start.sh` You will be able to run the script using 
+
+`./dev-start.sh`
+
 The app should be running at `localhost:8000/moneypyle`
+### Cleanly Wrapping Up
+just use: 
+`docker compose down` 
+
+and close out the webserver in your terminal with ctrl+c
 
 ## Usage
 | Note: in dev, the basse URL will be `localhost:8000/moneypyle`
@@ -106,6 +136,25 @@ L = what you owe
 E = owner's slice of the pie
 
 ---
+
+## Todos
+
+- make transaction pages for certain transaction types
+  - deposits (bank account)
+  - invoices (AR)
+  - bills (AP)
+- make user authentication
+  - make pages login only
+  - make calls with auth token
+  - define RLS
+- create categroization staging area
+  - bulk uploads happen here
+- improve links
+- improve endpoint names
+- 
+- (longterm) incorporate AJAX
+- 
+
 
 ## Deploying Project
 working on it
